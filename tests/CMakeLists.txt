@@ -1,0 +1,31 @@
+enable_testing()
+file(GLOB TEST_SRC
+  ${PROJECT_SOURCE_DIR}/tests/*.cc
+  # other files will list here...
+)
+
+add_executable(tests ${TEST_SRC})
+
+if (APPLE) 
+  target_include_directories(fact PUBLIC /usr/local/include)
+endif()
+
+# Check gtest library
+find_library(GTEST_LIB NAMES gtest)
+
+target_link_libraries(tests PRIVATE ${GTEST_LIB})
+target_link_libraries(tests PUBLIC fact)
+
+add_test(NAME test COMMAND tests)
+
+#[[
+if(CODE_COVERAGE AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang" AND CMAKE_BUILD_TYPE MATCHES "Debug")
+    set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+
+    include(CodeCoverage)
+    setup_target_for_coverage(sense_test_coverage tests coverage)
+
+    SET(CMAKE_CXX_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
+    SET(CMAKE_C_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
+endif()
+#]]
