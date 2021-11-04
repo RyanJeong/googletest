@@ -9,7 +9,7 @@ jobs:
 
     - name: Checkout submodules
       env:
-        SSH_KEY: ${{secrets.SSH_KEY_PRIVATE}}
+        SSH_KEY: ${{secrets.SSH_KEY}}
       run: |
         mkdir $HOME/.ssh && echo "$SSH_KEY" > $HOME/.ssh/id_rsa && chmod 600 $HOME/.ssh/id_rsa
         eval `ssh-agent -t 60 -s`
