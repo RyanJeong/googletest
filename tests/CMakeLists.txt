@@ -7,7 +7,7 @@ file(GLOB TEST_SRC
 add_executable(tests ${TEST_SRC})
 
 if (APPLE) 
-  target_include_directories(fact PUBLIC /usr/local/include)
+  target_include_directories(tests PUBLIC /usr/local/include)
 endif()
 
 # Check gtest library
@@ -15,6 +15,7 @@ find_library(GTEST_LIB NAMES gtest)
 
 target_link_libraries(tests PRIVATE ${GTEST_LIB})
 target_link_libraries(tests PUBLIC fact)
+target_link_libraries(tests PUBLIC two)
 
 add_test(NAME test COMMAND tests)
 
