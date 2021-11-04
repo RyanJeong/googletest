@@ -14,7 +14,10 @@ endif()
 find_library(GTEST_LIB NAMES gtest)
 
 # This is required for gtest library
+find_package(Boost COMPONENTS filesystem thread REQUIRED)
+set(BOOST_LIBS ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${Boost_SYSTEM_LIBRARY})
 find_package(Threads REQUIRED)
+
 
 target_link_libraries(tests PRIVATE ${GTEST_LIB})
 target_link_libraries(tests PUBLIC fact)
