@@ -16,6 +16,9 @@ limitations under the License.
 
 #include "fact.hpp"
 #include "two.hpp"
+#include "nlohmann/json.hpp"
+
+using json = nlohmann::json;
 
 TEST(FactorialTest, HandlesZeroInput) {
   EXPECT_EQ(my::fact::Factorial(0), 1);
@@ -39,6 +42,34 @@ TEST(TwoTest, HandlesEvenInput) {
   EXPECT_EQ(my::two::IsPowerOfTwo(2), true);
   EXPECT_EQ(my::two::MultiplyByTwo(4), 8);
   EXPECT_EQ(my::two::DevideByTwo(8), 4);
+}
+
+TEST(JsonTest, HandlesJsonObject) {
+  json j = {
+    {"pi", 3.141},
+    {"happy", true},
+    {"name", "Niels"},
+    {"nothing", nullptr},
+    {"answer", {
+      {"everything", 42}
+    }},
+    {"list", {1, 0, 2}},
+    {"object", {
+      {"currency", "USD"},
+      {"value", 42.99}
+    }}
+  };
+
+  EXPECT_EQ(j["pi"], 3.141);
+  EXPECT_EQ(j["happy"], true);
+  EXPECT_EQ(j["name"], "Niels");
+  EXPECT_EQ(j["nothing"], nullptr);
+  EXPECT_EQ(j["answer"]["everything"], 42);
+  EXPECT_EQ(j["list"][0], 1);
+  EXPECT_EQ(j["list"][1], 0);
+  EXPECT_EQ(j["list"][2], 2);
+  EXPECT_EQ(j["object"]["currency"], "USD");
+  EXPECT_EQ(j["object"]["value"], 42.99);
 }
 
 int main(int argc, char** argv) {

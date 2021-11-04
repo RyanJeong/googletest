@@ -16,6 +16,9 @@ find_library(GTEST_LIB NAMES gtest)
 target_link_libraries(tests PRIVATE ${GTEST_LIB})
 target_link_libraries(tests PUBLIC fact)
 target_link_libraries(tests PUBLIC two)
+target_include_directories(tests PUBLIC
+  ${PROJECT_SOURCE_DIR}/third_party/json/single_include/
+)
 
 add_test(NAME test COMMAND tests)
 
