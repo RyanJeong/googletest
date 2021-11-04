@@ -28,6 +28,16 @@ target_include_directories(tests PUBLIC
 
 add_test(NAME test COMMAND tests)
 
+if(CODE_COVERAGE AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang" AND CMAKE_BUILD_TYPE MATCHES "Debug")
+  set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+
+  include(CodeCoverage)
+  setup_target_for_coverage(test_coverage tests coverage)
+
+  SET(CMAKE_CXX_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
+  SET(CMAKE_C_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
+endif()
+
 #[[
 if(CODE_COVERAGE AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang" AND CMAKE_BUILD_TYPE MATCHES "Debug")
     set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
