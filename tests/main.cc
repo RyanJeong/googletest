@@ -15,6 +15,7 @@ limitations under the License.
 #include <gtest/gtest.h>
 
 #include "fact.hpp"
+#include "two.hpp"
 
 TEST(FactorialTest, HandlesZeroInput) {
   EXPECT_EQ(my::fact::Factorial(0), 1);
@@ -26,6 +27,18 @@ TEST(FactorialTest, HandlesPositiveInput) {
   EXPECT_EQ(my::fact::Factorial(2), 2);
   EXPECT_EQ(my::fact::Factorial(3), 6);
   EXPECT_EQ(my::fact::Factorial(8), 40320);
+}
+
+TEST(TwoTest, HandlesOddInput) {
+  EXPECT_EQ(my::two::IsPowerOfTwo(1), false);
+  EXPECT_EQ(my::two::MultiplyByTwo(3), 6);
+  EXPECT_EQ(my::two::DevideByTwo(3), 1);
+}
+
+TEST(TwoTest, HandlesEvenInput) {
+  EXPECT_EQ(my::two::IsPowerOfTwo(2), true);
+  EXPECT_EQ(my::two::MultiplyByTwo(4), 8);
+  EXPECT_EQ(my::two::DevideByTwo(8), 4);
 }
 
 int main(int argc, char** argv) {
