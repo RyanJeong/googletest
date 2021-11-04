@@ -13,6 +13,9 @@ endif()
 # Check gtest library
 find_library(GTEST_LIB NAMES gtest)
 
+# This is required for gtest library
+find_package(Threads REQUIRED)
+
 target_link_libraries(tests PRIVATE ${GTEST_LIB})
 target_link_libraries(tests PUBLIC fact)
 target_link_libraries(tests PUBLIC two)
