@@ -1,18 +1,36 @@
-name: GitHub Actions Demo
-on: [push]
+name: Build x86-64
+on: [push, pull_request]
 jobs:
-  Explore-GitHub-Actions:
+  build_and_test:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - name: Check out repository code
-        uses: actions/checkout@v2
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+    - name: Checkout
+      uses: actions/checkout@v2
 
+    - name: Checkout submodules
+      env:
+        SSH_KEY: ${{secrets.SSH_KEY_PRIVATE}}
+      run: |
+        mkdir $HOME/.ssh && echo "$SSH_KEY" > $HOME/.ssh/id_rsa && chmod 600 $HOME/.ssh/id_rsa
+        eval `ssh-agent -t 60 -s`
+        ssh-add $HOME/.ssh/id_rsa
+        ssh-keyscan github.com >> ~/.ssh/known_hosts
+        git submodule sync
+        git submodule update --init --recursive
+    - name: Install dependancies
+      run: sudo apt-get install -y libboost-thread-dev libgtest-dev curl unzip zlib1g-dev libeigen3-dev libboost-filesystem-dev libpulse-dev
+
+    - name: Install gtest
+      run: |
+        cd /usr/src/gtest
+        sudo cmake .
+        sudo make
+        sudo cp *.a /usr/lib && sudo ln -s /usr/lib/libgtest.a /usr/local/lib/libgtest.a && sudo ln -s /usr/lib/libgtest_main.a /usr/local/lib/libgtest_main.a
+        cd
+    - name: Build & Unit Test
+      run: |
+        mkdir -p build
+        cd build
+        cmake ..
+        make -j8
+        ./tests/tests
