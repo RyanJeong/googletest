@@ -18,7 +18,6 @@ find_package(Threads REQUIRED)
 
 target_link_libraries(tests PRIVATE ${GTEST_LIB} Threads::Threads)
 
-
 target_link_libraries(tests PRIVATE ${GTEST_LIB})
 target_link_libraries(tests PUBLIC fact)
 target_link_libraries(tests PUBLIC two)
@@ -37,15 +36,3 @@ if(CODE_COVERAGE AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang" AND CMAKE_BUILD_T
   SET(CMAKE_CXX_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
   SET(CMAKE_C_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
 endif()
-
-#[[
-if(CODE_COVERAGE AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang" AND CMAKE_BUILD_TYPE MATCHES "Debug")
-    set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
-
-    include(CodeCoverage)
-    setup_target_for_coverage(sense_test_coverage tests coverage)
-
-    SET(CMAKE_CXX_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
-    SET(CMAKE_C_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
-endif()
-#]]
