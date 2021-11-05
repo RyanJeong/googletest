@@ -1,4 +1,7 @@
 # googletest
+
+[![codecov](https://codecov.io/gh/ryanjeong/googletest/branch/main/graph/badge.svg?token=5FKE1CB0OO)](https://codecov.io/gh/ryanjeong/googletest)
+
 A repo. for practice GoogleTest
 
 ## Installation without using Homebrew:
