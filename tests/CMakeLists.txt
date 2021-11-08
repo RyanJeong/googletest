@@ -6,23 +6,17 @@ file(GLOB TEST_SRC
 
 add_executable(tests ${TEST_SRC})
 
-if (APPLE) 
-  target_include_directories(tests PUBLIC /usr/local/include)
-endif()
-
 # Check gtest library
 find_library(GTEST_LIB NAMES gtest)
 
 # This is required for gtest library
 find_package(Threads REQUIRED)
 
-target_link_libraries(tests PRIVATE ${GTEST_LIB} Threads::Threads)
+target_link_libraries(tests PRIVATE ${GTEST_LIB} Threads::Threads fact two)
 
-target_link_libraries(tests PRIVATE ${GTEST_LIB})
-target_link_libraries(tests PUBLIC fact)
-target_link_libraries(tests PUBLIC two)
 target_include_directories(tests PUBLIC
   ${PROJECT_SOURCE_DIR}/third_party/json/single_include/
+  $<$<BOOL:${APPLE}>:/usr/local/include>
 )
 
 add_test(NAME test COMMAND tests)
